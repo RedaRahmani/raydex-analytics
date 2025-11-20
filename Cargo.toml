@@ -1,0 +1,8 @@
+[workspace]
+members = [
+    "services/ingestion",
+    "services/api",
+]
+
+# modern resolver; helps with features in workspaces
+resolver = "2"
