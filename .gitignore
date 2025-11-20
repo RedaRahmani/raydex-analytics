@@ -1,0 +1,15 @@
+# Rust
+/target
+**/*.rs.bk
+
+# IDE / editor
+.vscode/
+.idea/
+*.iml
+
+# OS crap
+.DS_Store
+
+# Env / secrets
+.env
+.env.*
