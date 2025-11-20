@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   zookeeper:
+    platform: linux/amd64
     image: confluentinc/cp-zookeeper:7.5.0
     container_name: raydex-zookeeper
     environment:
@@ -20,13 +21,15 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
   clickhouse:
+    platform: linux/amd64
     image: clickhouse/clickhouse-server:24.1
     container_name: raydex-clickhouse
     ports:
@@ -34,9 +37,10 @@ services:
       - "9000:9000"  # native
     volumes:
       - clickhouse-data:/var/lib/clickhouse
-      - ./clickhouse:/docker-entrypoint-initdb.d  # later we’ll put init.sql here
+      - ./clickhouse:/docker-entrypoint-initdb.d
 
   prometheus:
+    platform: linux/amd64
     image: prom/prometheus:latest
     container_name: raydex-prometheus
     ports:
@@ -47,7 +51,9 @@ services:
       - kafka
       - clickhouse
 
+
   grafana:
+    platform: linux/amd64
     image: grafana/grafana:latest
     container_name: raydex-grafana
     ports:
